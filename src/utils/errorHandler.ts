@@ -1,4 +1,5 @@
 import { ElMessage, ElNotification } from 'element-plus'
+import { logError } from './logger'
 
 // 错误类型枚举
 export enum ErrorType {
@@ -82,7 +83,8 @@ export const handleNetworkError = (error: any): ErrorInfo => {
 
 // 统一错误处理函数
 export const handleError = (error: any, showNotification = false): ErrorInfo => {
-  console.error('Error occurred:', error)
+  // 使用日志记录错误
+  logError('应用错误', error)
   
   let errorInfo: ErrorInfo
   

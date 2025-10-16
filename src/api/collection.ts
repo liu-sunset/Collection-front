@@ -11,6 +11,7 @@ import type {
 } from '@/types/collection'
 import { handleError, ErrorType } from '@/utils/errorHandler'
 import { ElMessage } from 'element-plus'
+import { logInfo, logError } from '@/utils/logger'
 
 // 创建axios实例
 const api = axios.create({
@@ -24,11 +25,15 @@ const api = axios.create({
 // 请求拦截器
 api.interceptors.request.use(
   (config) => {
-    console.log('发送请求:', config)
+    logInfo('发送API请求', { 
+      url: config.url,
+      method: config.method,
+      params: config.params
+    })
     return config
   },
   (error) => {
-    console.error('请求错误:', error)
+    logError('API请求错误', error)
     handleError(error)
     return Promise.reject(error)
   }
@@ -37,12 +42,21 @@ api.interceptors.request.use(
 // 响应拦截器
 api.interceptors.response.use(
   (response) => {
-    console.log('收到响应:', response)
+    logInfo('收到API响应', { 
+      url: response.config.url,
+      status: response.status,
+      statusText: response.statusText
+    })
     
     // 检查业务状态码
     if (response.data && response.data.code !== undefined) {
       if (response.data.code !== 1) {
         const errorMessage = response.data.msg || '请求失败'
+        logError('API业务错误', { 
+          code: response.data.code,
+          message: errorMessage,
+          url: response.config.url
+        })
         ElMessage.error(errorMessage)
         throw new Error(errorMessage)
       }
