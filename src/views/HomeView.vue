@@ -712,7 +712,7 @@ const handleBiliSubmit = async () => {
           console.log('收藏夹详细信息获取成功:', detailResult)
           
           // 存储收藏夹详细信息到store
-          collectionStore.setCollectionDetails(detailResult)
+          collectionStore.setCollectionDetails(detailResult.collectionDetails || [])
         }
         
         // 显示成功消息

@@ -250,10 +250,12 @@ const clearError = () => {
 const retryLoad = async () => {
   try {
     // 使用正确的方法名，fetchCollections改为setCollections
-    await getBiliUserInfo({
-      cookie: collectionStore.biliFormData.cookie,
-      upMid: collectionStore.biliFormData.upMid
-    }).then(result => {
+    await import('@/api/collection').then(api => {
+      return api.getBiliUserInfo({
+        cookie: collectionStore.biliFormData.cookie,
+        upMid: collectionStore.biliFormData.upMid
+      });
+    }).then((result: any) => {
       collectionStore.setCollections(result.collectionInfo || [])
     })
     
@@ -277,10 +279,12 @@ const refreshData = async () => {
   
   try {
     // 使用正确的方法名，fetchCollections改为API调用和setCollections
-    await getBiliUserInfo({
-      cookie: collectionStore.biliFormData.cookie,
-      upMid: collectionStore.biliFormData.upMid
-    }).then(result => {
+    await import('@/api/collection').then(api => {
+      return api.getBiliUserInfo({
+        cookie: collectionStore.biliFormData.cookie,
+        upMid: collectionStore.biliFormData.upMid
+      });
+    }).then((result: any) => {
       collectionStore.setCollections(result.collectionInfo || [])
     })
     
