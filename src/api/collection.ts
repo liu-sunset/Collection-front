@@ -151,7 +151,7 @@ export const getBiliCollectionInfo = async (params: GetCollectionInfoParams): Pr
     
     // 处理返回的数据，为每个视频添加bvid字段
     const processedData = {
-      collectionDetails: response.data.data.map(collection => ({
+      collectionDetails: response.data.data.collectionDetails.map(collection => ({
         ...collection,
         videoInfoList: processVideoData(collection.videoInfoList || [])
       }))

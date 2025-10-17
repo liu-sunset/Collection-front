@@ -531,8 +531,8 @@ const handleUnifiedSubmit = async () => {
     
     // 并行执行请求
     const promises = []
-    let biliResult = null
-    let douyinResult = null
+    let biliResult: any = null
+    let douyinResult: any[] | null = null
     
     if (hasBili) {
       promises.push(
@@ -610,10 +610,10 @@ const handleUnifiedSubmit = async () => {
     
     if (hasSuccess) {
       // 存储数据到store
-      if (biliResult) {
+      if (biliResult && biliResult.userInfo && biliResult.details) {
         // 修复属性访问错误，确保数据结构正确
-        collectionStore.setCollections(biliResult.collectionInfo || [])
-        collectionStore.setCollectionDetails(biliResult.collectionDetails || [])
+        collectionStore.setCollections(biliResult.userInfo.collectionInfo || [])
+        collectionStore.setCollectionDetails(biliResult.details.collectionDetails || [])
       }
       
       if (douyinResult) {
@@ -623,16 +623,14 @@ const handleUnifiedSubmit = async () => {
       // 显示成功消息
       let successMessage = '获取成功！'
       if (hasBili && hasDouyin) {
-        // 修复属性访问错误
-        const biliCount = biliResult?.collectionInfo?.length || 0
-        const douyinCount = douyinResult?.length || 0
+        const biliCount = collectionStore.collections.length
+        const douyinCount = collectionStore.douyinVideos.length
         successMessage = `成功获取到 B站${biliCount}个收藏夹，抖音${douyinCount}个收藏视频`
       } else if (hasBili) {
-        // 修复属性访问错误
-        const biliCount = biliResult?.collectionInfo?.length || 0
+        const biliCount = collectionStore.collections.length
         successMessage = `成功获取到 ${biliCount} 个B站收藏夹`
       } else if (hasDouyin) {
-        const douyinCount = douyinResult?.length || 0
+        const douyinCount = collectionStore.douyinVideos.length
         successMessage = `成功获取到 ${douyinCount} 个抖音收藏视频`
       }
       
