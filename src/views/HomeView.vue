@@ -611,8 +611,9 @@ const handleUnifiedSubmit = async () => {
     if (hasSuccess) {
       // 存储数据到store
       if (biliResult) {
-        collectionStore.setCollections(biliResult.userInfo.collectionInfo || [])
-        collectionStore.setCollectionDetails(biliResult.details)
+        // 修复属性访问错误，确保数据结构正确
+        collectionStore.setCollections(biliResult.collectionInfo || [])
+        collectionStore.setCollectionDetails(biliResult.collectionDetails || [])
       }
       
       if (douyinResult) {
@@ -622,11 +623,13 @@ const handleUnifiedSubmit = async () => {
       // 显示成功消息
       let successMessage = '获取成功！'
       if (hasBili && hasDouyin) {
-        const biliCount = biliResult?.userInfo.collectionInfo?.length || 0
+        // 修复属性访问错误
+        const biliCount = biliResult?.collectionInfo?.length || 0
         const douyinCount = douyinResult?.length || 0
         successMessage = `成功获取到 B站${biliCount}个收藏夹，抖音${douyinCount}个收藏视频`
       } else if (hasBili) {
-        const biliCount = biliResult?.userInfo.collectionInfo?.length || 0
+        // 修复属性访问错误
+        const biliCount = biliResult?.collectionInfo?.length || 0
         successMessage = `成功获取到 ${biliCount} 个B站收藏夹`
       } else if (hasDouyin) {
         const douyinCount = douyinResult?.length || 0

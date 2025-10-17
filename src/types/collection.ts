@@ -16,6 +16,22 @@ export interface VideoInfo {
   title: string
   cover: string
   link: string
+  duration?: number
+  owner?: {
+    name?: string
+    face?: string
+    mid?: string
+  }
+  stat?: {
+    view?: number
+    danmaku?: number
+    reply?: number
+    favorite?: number
+    coin?: number
+    share?: number
+    like?: number
+  }
+  desc?: string
 }
 
 // 前端使用的视频信息（扩展格式，包含从link提取的bvid）
@@ -44,11 +60,15 @@ export interface GetUserInfoParams {
 }
 
 export interface GetCollectionInfoParams {
-  collectionIds: string[]
+  collectionIds?: string[]
+  cookie?: string
+  upMid?: string
 }
 
 // 获取收藏夹详细信息的响应
-export type CollectionDetailResponse = CollectionDetail[]
+export interface CollectionDetailResponse {
+  collectionDetails: CollectionDetail[]
+}
 
 // 抖音收藏视频信息
 export interface DouyinVideoInfo {

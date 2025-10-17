@@ -249,7 +249,14 @@ const clearError = () => {
 // 重试加载数据
 const retryLoad = async () => {
   try {
-    await collectionStore.fetchCollections()
+    // 使用正确的方法名，fetchCollections改为setCollections
+    await getBiliUserInfo({
+      cookie: collectionStore.biliFormData.cookie,
+      upMid: collectionStore.biliFormData.upMid
+    }).then(result => {
+      collectionStore.setCollections(result.collectionInfo || [])
+    })
+    
     ElNotification({
       title: '加载成功',
       message: `成功获取到收藏内容`,
@@ -269,7 +276,14 @@ const refreshData = async () => {
   refreshing.value = true
   
   try {
-    await collectionStore.fetchCollections()
+    // 使用正确的方法名，fetchCollections改为API调用和setCollections
+    await getBiliUserInfo({
+      cookie: collectionStore.biliFormData.cookie,
+      upMid: collectionStore.biliFormData.upMid
+    }).then(result => {
+      collectionStore.setCollections(result.collectionInfo || [])
+    })
+    
     ElMessage.success('刷新成功')
   } catch (err: any) {
     console.error('刷新失败:', err)
